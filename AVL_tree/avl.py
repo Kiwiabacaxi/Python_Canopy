@@ -1,14 +1,10 @@
 class node:
-    def __init__(self, key):
+    def __init__(self, key=None):
         self.key = key          # key of the node       // informaçao do nó
         self.left = None        # left child            // filho esquerdo
         self.right = None       # right child           // filho direito
         self.parent = None      # parent of the node    // pai do nó
         self.height = 1         # height of the node    // altura do nó
-
-    def __str__(self):
-        # return the key of the node // retorna a chave do nó em forma de string
-        return str(self.key)
 
 
 class AVLTree:
@@ -16,7 +12,7 @@ class AVLTree:
         self.root = None  # root of the tree      // raiz da árvore
 
     def __repr__(self):
-        if self.root is None:
+        if self.root == None:
             return 'Empty tree'  # se a árvore estiver vazia retorna 'Empty tree'
 
         content = '\n'  # to store the tree content
@@ -25,16 +21,17 @@ class AVLTree:
         # variable sized separator between elements
         sep = ' ' * (2 ** (current_height - 1))
         while True:
-            if all(n is None for n in current_node):
-                break
+            current_height += -1
 
             if len(current_node) == 0:
                 break
 
-            current_height += -1
             current_row = ' '
             next_row = ''
             next_nodes = []
+
+            if all(n is None for n in current_node):
+                break
 
             for n in current_node:
                 if n is None:
@@ -45,8 +42,7 @@ class AVLTree:
 
                 if n.key != None:
                     buf = ' ' * int((5 - len(str(n.key))) / 2)
-                    current_row += '%s%s%s' % (buf, n.key, buf) + sep
-
+                    current_row += '%s%s%s' % (buf, str(n.key), buf) + sep
                 else:
                     current_row += ' '*5+sep
 
@@ -76,14 +72,13 @@ class AVLTree:
         if self.root == None:
             self.root = node(key)
         else:
-            self._insert(self.root, key)
+            self._insert(key, self.root)
 
-#   def _insert(self, current_node, key):
     def _insert(self, key, current_node):
         if key < current_node.key:
             if current_node.left == None:                  # se o filho esquerdo for vazio
                 current_node.left = node(key)              # cria o nó
-                current_node.left.parent = current_node   # define o pai do nó
+                current_node.left.parent = current_node    # define o pai do nó
                 # verifica se a árvore está balanceada
                 self._inspect_insertion(current_node.left)
             else:
@@ -93,12 +88,12 @@ class AVLTree:
         elif key > current_node.key:
             if current_node.right == None:                 # se o filho direito for vazio
                 current_node.right = node(key)             # cria o nó
-                current_node.right.parent = current_node  # define o pai do nó
+                current_node.right.parent = current_node   # define o pai do nó
                 # verifica se a árvore está balanceada
                 self._inspect_insertion(current_node.right)
             else:
                 self._insert(key, current_node.right)
-                
+
         else:
             # se a chave já existir na árvore
             print(" The key already exists in the tree ")
@@ -152,7 +147,7 @@ class AVLTree:
         elif key > current_node.key and current_node.right != None:
             return self._find(key, current_node.right)
 
-    def delete_value(self, key):
+    def delete_key(self, key):
         return self.delete_node(self.find(key))
 
     def delete_node(self, node):
@@ -161,26 +156,25 @@ class AVLTree:
             print(" Node to be deleted not found in the tree ")
             return None
 
-        # returns the node with the minimum value // retorna o nó com o valor mínimo
-        def min_value_node(a):
+        # returns the node with the minimum key // retorna o nó com o valor mínimo
+        def min_key_node(n):
 
-            current = a
-
+            current = n
             # loop para encontrar o nó com o valor mínimo
             while current.left != None:
                 current = current.left
             return current
 
         # returns the number of children for the specified node // retorna o número de filhos para o nó especificado
-        def num_children(a):
+        def num_children(n):
             num_children = 0
 
             # se o filho esquerdo não for vazio
-            if a.left != None:
+            if n.left != None:
                 num_children += 1
 
             # se o filho direito não for vazio
-            if a.right != None:
+            if n.right != None:
                 num_children += 1
 
             return num_children
@@ -232,13 +226,14 @@ class AVLTree:
         if node_children == 2:
 
             # get the inorder successor of the deleted node // obtém o sucessor em ordem do nó excluído
-            sucessor = min_value_node(node.right)
-
+            # sucessor = min_key_node(node.right) # vtnc
+            successor = min_key_node(node.right)
+            
             # copia o valor do sucessor para o nó
-            node.key = sucessor.key
+            node.key = successor.key
 
             # deleta o sucessor
-            self.delete_node(sucessor)
+            self.delete_node(successor)
 
             # exit function so we don't call _inspect_deletion twice // sai da função para não chamarmos _inspect_deletion duas vezes
             return
@@ -278,17 +273,19 @@ class AVLTree:
 
         return False
 
+    # avl tree functions // funções da árvore avl
+
     def _inspect_insertion(self, current_node, path=[]):
 
         if current_node.parent == None:
             return
-        path = [current_node] + path
+        path = [current_node]+path
 
         left_height = self.get_height(current_node.parent.left)
         right_height = self.get_height(current_node.parent.right)
 
-        if abs(left_height - right_height) > 1:
-            path = [current_node.parent] + path
+        if abs(left_height-right_height) > 1:
+            path = [current_node.parent]+path
             self._rebalance_node(path[0], path[1], path[2])
             return
 
@@ -311,7 +308,6 @@ class AVLTree:
             y = self.taller_child(current_node)
             x = self.taller_child(y)
             self._rebalance_node(current_node, y, x)
-            return
 
         self._inspect_deletion(current_node.parent)
 
@@ -349,24 +345,26 @@ class AVLTree:
         y.right = z
         z.parent = y
         z.left = t3
+
+        # update parents
         if t3 != None:
             t3.parent = z
+        y.parent = aux
+
+        # update root
+        if y.parent == None:
+            self.root = y
+
+        # update parent's child
+        else:
+            if y.parent.left == z:
+                y.parent.left = y
+            else:
+                y.parent.right = y
 
         # update heights
         z.height = 1 + max(self.get_height(z.left), self.get_height(z.right))
         y.height = 1 + max(self.get_height(y.left), self.get_height(y.right))
-
-        # set new root
-        if aux != None:
-            if aux.left == z:
-                aux.left = y
-            else:
-                aux.right = y
-        y.parent = aux
-
-        if z == self.root:
-            self.root = y
-            y.parent = None
 
     def _left_rotate(self, z):
 
@@ -379,29 +377,31 @@ class AVLTree:
         y.left = z
         z.parent = y
         z.right = t2
+
+        # update parents
         if t2 != None:
             t2.parent = z
+        y.parent = aux
+
+        # update root
+        if y.parent == None:
+            self.root = y
+
+        # update parent's child
+        else:
+            if y.parent.left == z:
+                y.parent.left = y
+            else:
+                y.parent.right = y
 
         # update heights
         z.height = 1 + max(self.get_height(z.left), self.get_height(z.right))
         y.height = 1 + max(self.get_height(y.left), self.get_height(y.right))
 
-        # set new root
-        if aux != None:
-            if aux.left == z:
-                aux.left = y
-            else:
-                aux.right = y
-        y.parent = aux
-
-        if z == self.root:
-            self.root = y
-            y.parent = None
-
     def get_height(self, node):
         # return the height of the node // retorna a altura do nó
         if node == None:
-            return -1
+            return 0
         else:
             return node.height
 
@@ -409,7 +409,7 @@ class AVLTree:
 
         # left receives the height of the left child // esquerda recebe a altura do filho esquerdo
         left = self.get_height(node.left)
-        
+
         # right receives the height of the right child // direita recebe a altura do filho direito
         right = self.get_height(node.right)
 
@@ -439,5 +439,5 @@ for i in range(10):
 
 for i in range(10):
     print("Deleting: ", i)
-    a.delete_value(i)
+    a.delete_key(i)
     print(a)

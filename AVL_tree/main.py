@@ -1,4 +1,4 @@
-from avl import *
+from avl import AVLTree
 
 a = AVLTree()
 for i in range(10):
@@ -9,7 +9,7 @@ for i in range(10):
 
 for i in range(10):
     print(f"Deleting {i}...")
-    a.delete(i)
+    a.delete_key(i)
     print(a)
     print("")
     
