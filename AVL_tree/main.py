@@ -7,9 +7,15 @@ for i in range(10):
     print(a)
     print("")
 
+
+input("Press Enter to continue...")
+
 for i in range(10):
     print(f"Deleting {i}...")
     a.delete_key(i)
     print(a)
     print("")
+
+
+input("Press Enter to continue...")
     
