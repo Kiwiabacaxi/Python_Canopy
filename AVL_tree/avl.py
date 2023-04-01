@@ -1,10 +1,10 @@
 class node:
     def __init__(self, key=None):
-        self.key = key          # key of the node       // informaçao do nó
-        self.left = None        # left child            // filho esquerdo
-        self.right = None       # right child           // filho direito
-        self.parent = None      # parent of the node    // pai do nó
-        self.height = 1         # height of the node    // altura do nó
+        self.key = key  # key of the node       // informaçao do nó
+        self.left = None  # left child            // filho esquerdo
+        self.right = None  # right child           // filho direito
+        self.parent = None  # parent of the node    // pai do nó
+        self.height = 1  # height of the node    // altura do nó
 
 
 class AVLTree:
@@ -12,22 +12,23 @@ class AVLTree:
         self.root = None  # root of the tree      // raiz da árvore
 
     def __repr__(self):
-        if self.root == None:
-            return 'Empty tree'  # se a árvore estiver vazia retorna 'Empty tree'
+        if self.root is None:
+            return ""
 
-        content = '\n'  # to store the tree content
+        content = "\n"  # to store the tree content
         current_node = [self.root]  # all nodes at current level
         current_height = self.root.height  # height of nodes at current level
         # variable sized separator between elements
-        sep = ' ' * (2 ** (current_height - 1))
+
+        sep = " " * (2 ** (current_height - 1))
+
         while True:
             current_height += -1
 
             if len(current_node) == 0:
                 break
-
-            current_row = ' '
-            next_row = ''
+            current_row = " "
+            next_row = ""
             next_nodes = []
 
             if all(n is None for n in current_node):
@@ -35,281 +36,274 @@ class AVLTree:
 
             for n in current_node:
                 if n is None:
-                    current_row += '   ' + sep
-                    next_row += '   ' + sep
+                    current_row += "   " + sep
+                    next_row += "   " + sep
                     next_nodes.extend([None, None])
                     continue
 
-                if n.key != None:
-                    buf = ' ' * int((5 - len(str(n.key))) / 2)
-                    current_row += '%s%s%s' % (buf, str(n.key), buf) + sep
+                if n.key is not None:
+                    buf = " " * int((5 - len(str(n.key))) / 2)
+                    current_row += "%s%s%s" % (buf, str(n.key), buf) + sep
                 else:
-                    current_row += ' '*5+sep
+                    current_row += " " * 5 + sep
 
-                if n.left != None:
+                if n.left is not None:
                     next_nodes.append(n.left)
-                    next_row += ' /' + sep
+                    next_row += " /" + sep
                 else:
-                    next_row += '  ' + sep
+                    next_row += "  " + sep
                     next_nodes.append(None)
 
-                if n.right != None:
+                if n.right is not None:
                     next_nodes.append(n.right)
-                    next_row += '\ ' + sep
+                    next_row += "\ " + sep
                 else:
-                    next_row += '  ' + sep
+                    next_row += " " + sep
                     next_nodes.append(None)
 
-            content += (current_height*'   '+current_row +
-                        '\n'+current_height*'   '+next_row+'\n')
-            sep = ' '*int(len(sep)/2)  # cut separator size in half
+            content += (
+                current_height * "   "
+                + current_row
+                + "\n"
+                + current_height * "   "
+                + next_row
+                + "\n"
+            )
             current_node = next_nodes
-
+            sep = " " * int(len(sep) / 2)  # cut separator size in half
         return content
 
     def insert(self, key):
-        # insert a node with key 'key' into the tree // insere um nó com chave 'key' na árvore
-        if self.root == None:
+        # insert a node with key 'key' into the tree
+        if self.root is None:
             self.root = node(key)
         else:
             self._insert(key, self.root)
 
-    def _insert(self, key, current_node):
-        if key < current_node.key:
-            if current_node.left == None:                  # se o filho esquerdo for vazio
-                current_node.left = node(key)              # cria o nó
-                current_node.left.parent = current_node    # define o pai do nó
-                # verifica se a árvore está balanceada
-                self._inspect_insertion(current_node.left)
+    def _insert(self, key, cur_node):
+        if key < cur_node.key:
+            if cur_node.left is None:  # se o filho esquerdo for vazio
+                cur_node.left = node(key)  # cria um novo nó
+                cur_node.left.parent = node  # o pai do novo nó é o nó atual
+                self._inspect_insertion(cur_node.left)  # inspeciona a árvore
             else:
-                # se o filho esquerdo não for vazio, chama a função novamente
-                self._insert(key, current_node.left)
+                # se o filho esquerdo não for vazio, chama a função recursivamente
+                self._insert(key, cur_node.left)
+        elif key > cur_node.key:  # se o valor for maior que o nó atual
+            if cur_node.right is None:  # se o filho direito for vazio
+                cur_node.right = node(key)
+                cur_node.right.parent = cur_node
 
-        elif key > current_node.key:
-            if current_node.right == None:                 # se o filho direito for vazio
-                current_node.right = node(key)             # cria o nó
-                current_node.right.parent = current_node   # define o pai do nó
                 # verifica se a árvore está balanceada
-                self._inspect_insertion(current_node.right)
+                self._inspect_insertion(cur_node.right)
             else:
-                self._insert(key, current_node.right)
-
+                self._insert(key, cur_node.right)
         else:
-            # se a chave já existir na árvore
-            print(" The key already exists in the tree ")
+            # se o valor já estiver na árvore
+            print("key already in tree!")
 
     def print_tree(self):
-        if self.root != None:
+        if self.root is not None:
             self._print_tree(self.root)
 
-    def _print_tree(self, current_node):
-        if current_node != None:
-            self._print_tree(current_node.left)
-            print('%s, h=%d' % (str(current_node.key), current_node.height))
-            self._print_tree(current_node.right)
+    def _print_tree(self, cur_node):
+        if cur_node is not None:
+            self._print_tree(cur_node.left)
+            print("%s, h=%d" % (str(cur_node.key), cur_node.height))
+            self._print_tree(cur_node.right)
 
     def height(self):
-        if self.root != None:
-            return self._height(self.node, 0)
+        if self.root is not None:
+            return self._height(self.root, 0)
         else:
             return 0
 
-    def _height(self, current_node, current_height):
-        if current_node == None:  # empty node // se o nó for vazio
+    def _height(self, cur_node, current_height):
+        if cur_node is None:
             return current_height
 
-        # left subtree // subárvore esquerda
-        left_height = self._height(current_node.left, current_height + 1)
+        # se o nó atual for vazio, retorna a altura atual
+        left_height = self._height(cur_node.left, current_height + 1)
 
-        # right subtree // subárvore direita
-        right_height = self._height(current_node.right, current_height + 1)
+        # se o nó atual for vazio, retorna a altura atual
+        right_height = self._height(cur_node.right, current_height + 1)
 
-        # retorna a maior altura entre a subárvore esquerda e a subárvore direita
+        # retorna a maior altura
         return max(left_height, right_height)
 
     def find(self, key):
-        # find the node with key 'key' // encontra o nó com chave 'key'
-        if self.root != None:
+        # find the node with key 'key' in the tree
+        if self.root is not None:
             return self._find(key, self.root)
         else:
             return None
 
-    def _find(self, key, current_node):
-        # se a chave for igual a chave do nó atual
-        if key == current_node.key:
-            return current_node
+    def _find(self, key, cur_node):
+        # find the node with key 'key' in the tree
+        if key is cur_node.key:
+            return cur_node
 
-        # se a chave for menor que a chave do nó atual e o filho esquerdo não for vazio
-        elif key < current_node.key and current_node.left != None:
-            return self._find(key, current_node.left)
+        # if the key is less than the current node's key, go left
+        elif key < cur_node.key and cur_node.left is not None:
+            return self._find(key, cur_node.left)
 
-        # se a chave for maior que a chave do nó atual e o filho direito não for vazio
-        elif key > current_node.key and current_node.right != None:
-            return self._find(key, current_node.right)
+        # if the key is greater than the current node's key, go right
+        elif key > cur_node.key and cur_node.right is not None:
+            return self._find(key, cur_node.right)
 
     def delete_key(self, key):
         return self.delete_node(self.find(key))
 
     def delete_node(self, node):
-        # returns the node or None if the key is not found // retorna o nó ou None se a chave não for encontrada
-        if node == None or self.find(node.key) == None:
-            print(" Node to be deleted not found in the tree ")
+        # returns the node with min key in tree rooted at input node
+        # retorna o nó com a menor chave na árvore
+        if node is None or self.find(node.key) is None:
+            print("Node to be deleted not found in the tree!")
             return None
 
-        # returns the node with the minimum key // retorna o nó com o valor mínimo
+        # returns the node with min key in tree rooted at input node
         def min_key_node(n):
-
             current = n
-            # loop para encontrar o nó com o valor mínimo
-            while current.left != None:
+            while current.left is not None:
                 current = current.left
             return current
 
-        # returns the number of children for the specified node // retorna o número de filhos para o nó especificado
+        # returns the number of children for the specified node
         def num_children(n):
             num_children = 0
 
-            # se o filho esquerdo não for vazio
-            if n.left != None:
+            # se o filho esquerdo não for vazio, incrementa o número de filhos
+            if n.left is not None:
                 num_children += 1
 
-            # se o filho direito não for vazio
-            if n.right != None:
+            # se o filho direito não for vazio, incrementa o número de filhos
+            if n.right is not None:
                 num_children += 1
 
             return num_children
 
-        # get the parent of the node to be deleted // obtém o pai do nó a ser excluído
+        # get the parent of the node to be deleted
         node_parent = node.parent
-        # get the number of children of the node to be deleted // obtém o número de filhos do nó a ser excluído
+
+        # get the number of children of the node to be deleted
         node_children = num_children(node)
 
         # case 1 (node has no children) // caso 1 (nó não tem filhos)
         if node_children == 0:
-
-            # se o nó não for a raiz
-            if node_parent != None:
-                # removes the reference to the node from the parent // remove a referência ao nó do pai
+            if node_parent is not None:
+                # remove reference to the node from the parent
                 if node_parent.left == node:
                     node_parent.left = None
                 else:
                     node_parent.right = None
-
-            # se o nó for a raiz
             else:
                 self.root = None
 
         # case 2 (node has a single child) // caso 2 (nó tem um único filho)
         if node_children == 1:
-
-            # get the single child node // obtém o nó filho único
-            if node.left != None:
+            # get the single child node
+            if node.left is not None:
                 child = node.left
             else:
                 child = node.right
 
-            # se o nó não for a raiz
-            if node_parent != None:
-
-                # se o nó for o filho esquerdo do pai
+            if node_parent is not None:
+                # replace the node to be deleted with its child
                 if node_parent.left == node:
-                    # define o filho esquerdo do pai como o filho do nó
                     node_parent.left = child
                 else:
                     node_parent.right = child
-
-            # se o nó for a raiz
             else:
                 self.root = child
 
+            # correct the parent pointer in node
+            child.parent = node_parent
+
         # case 3 (node has two children) // caso 3 (nó tem dois filhos)
         if node_children == 2:
-
-            # get the inorder successor of the deleted node // obtém o sucessor em ordem do nó excluído
-            # sucessor = min_key_node(node.right) # vtnc
+            # get the inorder successor of the deleted node
             successor = min_key_node(node.right)
-            
-            # copia o valor do sucessor para o nó
+
+            # copy the inorder successor's key to the node formerly
+            # holding the key we wished to delete
             node.key = successor.key
 
-            # deleta o sucessor
+            # delete the inorder successor now that it's key was
+            # copied into the other node
             self.delete_node(successor)
 
-            # exit function so we don't call _inspect_deletion twice // sai da função para não chamarmos _inspect_deletion duas vezes
+            # exit function so we don't call the _inspect_deletion twice
             return
 
-        # verifica se a árvore está balanceada
-        if node_parent != None:
-            # fix the height of the parent // atualiza a altura do pai
+        if node_parent is not None:
+            # fix the height of the parent of current node
+            node_parent.height = 1 + max(
+                self.get_height(node_parent.left), self.get_height(
+                    node_parent.right)
+            )
 
-            node_parent.height = 1 + \
-                max(self.get_height(node_parent.left),
-                    self.get_height(node_parent.right))
-
-            # begin to inspect the tree for balance // começa a inspecionar a árvore para o equilíbrio
+            # begin to traverse back up the tree checking if there are
+            # any sections which now invalidate the AVL balance rules
             self._inspect_deletion(node_parent)
 
     def search(self, key):
-        # search the tree for a node with the key 'key' // pesquisa a árvore por um nó com a chave 'key'
-        if self.root != None:
+        # find the node with key 'key' in the tree
+        if self.root is not None:
             return self._search(key, self.root)
-        # se a raiz for vazia
+
         else:
             return False
 
-    def _search(self, key, current_node):
-
-        # if the key is equal to the key of the current node // se a chave for igual à chave do nó atual
-        if key == current_node.key:
+    def _search(self, key, cur_node):
+        # if the key is less than the current node's key, go left
+        if key == cur_node.key:
             return True
 
-        # if the key is less than the key of the current node // se a chave for menor que a chave do nó atual
-        elif key < current_node.key and current_node.left != None:
-            return self._search(key, current_node.left)
+        # if the key is less than the current node's key, go left
+        elif key < cur_node.key and cur_node.left is not None:
+            return self._search(key, cur_node.left)
 
-        # if the key is greater than the key of the current node // se a chave for maior que a chave do nó atual
-        elif key > current_node.key and current_node.right != None:
-            return self._search(key, current_node.right)
-
+        # if the key is greater than the current node's key, go right
+        elif key > cur_node.key and cur_node.right is not None:
+            return self._search(key, cur_node.right)
         return False
 
-    # avl tree functions // funções da árvore avl
+    # Functions added for AVL...
 
-    def _inspect_insertion(self, current_node, path=[]):
-
-        if current_node.parent == None:
+    def _inspect_insertion(self, cur_node, path=[]):
+        if cur_node.parent is None:
             return
-        path = [current_node]+path
+        path = [cur_node] + path
 
-        left_height = self.get_height(current_node.parent.left)
-        right_height = self.get_height(current_node.parent.right)
+        left_height = self.get_height(cur_node.parent.left)
+        right_height = self.get_height(cur_node.parent.right)
 
-        if abs(left_height-right_height) > 1:
-            path = [current_node.parent]+path
+        if abs(left_height - right_height) > 1:
+            path = [cur_node.parent] + path
             self._rebalance_node(path[0], path[1], path[2])
             return
 
-        new_height = 1 + current_node.height
-        if new_height > current_node.parent.height:
-            current_node.parent.height = new_height
+        new_height = 1 + cur_node.height
+        if new_height > cur_node.parent.height:
+            cur_node.parent.height = new_height
 
-        self._inspect_insertion(current_node.parent, path)
+        self._inspect_insertion(cur_node.parent, path)
 
-    def _inspect_deletion(self, current_node):
-        if current_node == None:
+    def _inspect_deletion(self, cur_node):
+        if cur_node is None:
             return
 
-        # atualiza a altura do nó
-        left_height = self.get_height(current_node.left)
-        right_height = self.get_height(current_node.right)
+        # update the height of the current node
+        left_height = self.get_height(cur_node.left)
+        right_height = self.get_height(cur_node.right)
 
-        # the height of the current node is the maximum height of its children plus one // a altura do nó atual é a altura máxima de seus filhos mais um
+        # the height of the current node is the max height of its children
         if abs(left_height - right_height) > 1:
-            y = self.taller_child(current_node)
+            y = self.taller_child(cur_node)
             x = self.taller_child(y)
-            self._rebalance_node(current_node, y, x)
+            self._rebalance_node(cur_node, y, x)
 
-        self._inspect_deletion(current_node.parent)
+        self._inspect_deletion(cur_node.parent)
 
     def _rebalance_node(self, z, y, x):
 
@@ -336,26 +330,26 @@ class AVLTree:
 
     def _right_rotate(self, z):
 
-        # set up
-        aux = z.parent
+        # set z as the root of the subtree
+        sub_root = z.parent
         y = z.left
         t3 = y.right
 
-        # rotation
+        # perform rotation
         y.right = z
         z.parent = y
         z.left = t3
 
-        # update parents
-        if t3 != None:
+        # update heights
+        if t3 is not None:
             t3.parent = z
-        y.parent = aux
+        y.parent = sub_root
 
-        # update root
-        if y.parent == None:
+        # set the new root of the subtree
+        if y.parent is None:
             self.root = y
 
-        # update parent's child
+        # set the new root of the subtree
         else:
             if y.parent.left == z:
                 y.parent.left = y
@@ -368,26 +362,26 @@ class AVLTree:
 
     def _left_rotate(self, z):
 
-        # set up
-        aux = z.parent
+        # set z as the root of the subtree
+        sub_root = z.parent
         y = z.right
         t2 = y.left
 
-        # rotation
+        # perform rotation
         y.left = z
         z.parent = y
         z.right = t2
 
-        # update parents
-        if t2 != None:
+        # update heights
+        if t2 is not None:
             t2.parent = z
-        y.parent = aux
+        y.parent = sub_root
 
-        # update root
-        if y.parent == None:
+        # set the new root of the subtree
+        if y.parent is None:
             self.root = y
 
-        # update parent's child
+        # set the new root of the subtree
         else:
             if y.parent.left == z:
                 y.parent.left = y
@@ -398,38 +392,22 @@ class AVLTree:
         z.height = 1 + max(self.get_height(z.left), self.get_height(z.right))
         y.height = 1 + max(self.get_height(y.left), self.get_height(y.right))
 
-    def get_height(self, node):
+    def get_height(self, cur_node):
         # return the height of the node // retorna a altura do nó
-        if node == None:
+        if cur_node is None:
             return 0
-        else:
-            return node.height
+        return cur_node.height
 
-    def taller_child(self, node):
+    def taller_child(self, cur_node):
+        # return the taller child of the current node // retorna o filho mais alto do nó atual
+        left = self.get_height(cur_node.left)
 
-        # left receives the height of the left child // esquerda recebe a altura do filho esquerdo
-        left = self.get_height(node.left)
+        # if the left child is taller than the right child, return the left child // se o filho esquerdo for mais alto que o filho direito, retorne o filho esquerdo
+        right = self.get_height(cur_node.right)
 
-        # right receives the height of the right child // direita recebe a altura do filho direito
-        right = self.get_height(node.right)
+        # if the left child is taller than the right child, return the left child // se o filho esquerdo for mais alto que o filho direito, retorne o filho esquerdo
+        return cur_node.left if left >= right else cur_node.right
 
-        # return the child with the greater height // retorna o filho com a maior altura
-        return node.left if left >= right else node.right
-
-
-""" a = AVLTree()
-for i in range(10):
-    print(f"Inserting {i}...")
-    a.insert(i)
-    print(a)
-    print("")
-
-for i in range(10):
-    print(f"Deleting {i}...")
-    a.delete(i)
-    print(a)
-    print("")
-     """
 
 a = AVLTree()
 for i in range(10):
