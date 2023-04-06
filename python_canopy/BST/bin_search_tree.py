@@ -33,33 +33,34 @@ class BinarySearchTree:
             value (int): The value to insert.
             current (Node): The current node to compare the value to.
         """
-        # se o valor for menor que o valor do nó atual, então vamos para a esquerda
+        # case 1: if the value is less than the current node's value, go left
         if value < current.value:
 
-            # se nao tem nó a esquerda, então criamos um nó com o valor
+            # if there is no left child, create a node with the value
             if current.left is None:
                 current.left = Node(value)
 
-            # se tem nó a esquerda, então chamamos recursivamente a função
+            # if there is a left child, call the _insert method recursively
             else:
                 self._insert(value, current.left)
 
-        # se o valor for maior que o valor do nó atual, então vamos para a direita
+        # case 2: if the value is greater than the current node's value, go right
         elif value > current.value:
 
-            # se nao tem nó a direita, então criamos um nó com o valor
+            # if there is no right child, create a node with the value
             if current.right is None:
                 current.right = Node(value)
 
-            # se tem nó a direita, então chamamos recursivamente a função
+            # if there is a right child, call the _insert method recursively
             else:
                 self._insert(value, current.right)
 
-        # se o valor for igual ao valor do nó atual, então não fazemos nada
+        # case 3: if the value is equal to the current node's value, do nothing
         else:
             print("Skipping duplicate value")
 
     def print_tree(self) -> None:
+        """Prints the tree in order."""
         if self.root is not None:
             self._print_tree(self.root)
 
