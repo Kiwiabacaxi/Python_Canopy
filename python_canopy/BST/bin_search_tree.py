@@ -60,23 +60,6 @@ class BinarySearchTree:
         else:
             pass
 
-    def print_tree(self) -> None:
-        """Prints the tree in order."""
-        if self.root is not None:
-            self._print_tree(self.root)
-
-    def _print_tree(self, current: Optional[Node]) -> None:
-        """Private method to print the tree in order.
-
-        Args:
-            current (Optional[Node]): The current node to print.
-        """
-        if current is not None:
-            # print in order
-            self._print_tree(current.left)
-            print(str(current.value))
-            self._print_tree(current.right)
-
     def search(self, value: int) -> bool:
         """Searches for a value in the tree.
 
@@ -234,7 +217,8 @@ class BinarySearchTree:
             # case 3: two children
             else:
                 # get the leftmost node of the right subtree
-                replacing_node = self.get_leftmost_node(node=deleting_node.right) # self or BinarySearchTree?
+                replacing_node = self.get_leftmost_node(
+                    node=deleting_node.right)  # self or BinarySearchTree?
                 # the leftmost node is not the direct child of the node to be deleted
                 if replacing_node.parent != deleting_node:
                     # transplate the leftmost node for its right child
@@ -243,12 +227,60 @@ class BinarySearchTree:
                     replacing_node.right = deleting_node.right
                     # set the parent of the right child of the node to be deleted as the leftmost node
                     replacing_node.right.parent = replacing_node
-                    
+
                 # transplate the node to be deleted for the leftmost node
                 self._transplate(u=deleting_node, v=replacing_node)
                 replacing_node.left = deleting_node.left
                 replacing_node.left.parent = replacing_node
-                
+
+    # prints functions
+
+    def print_tree(self) -> None:
+        """Prints the tree in order."""
+        if self.root is not None:
+            self._print_tree(self.root)
+
+    def _print_tree(self, current: Optional[Node]) -> None:
+        """Private method to print the tree in order.
+
+        Args:
+            current (Optional[Node]): The current node to print.
+        """
+        if current is not None:
+            # print in order
+            self._print_tree(current.left)
+            print(str(current.value))
+            self._print_tree(current.right)
+
+    ## Function to print level order traversal of tree
+    def print_level_order(self) -> None:
+        """Prints the tree in level order.
+        """
+        height = self.height()
+        print(f"Height of the tree: {height}")
+        # the height of the tree is the number of levels
+        for i in range(1, height + 1):
+            self._print_given_level(self.root, i)
+            print()
+
+    def _print_given_level(self, root: Optional[Node], level: int) -> None:
+        """Prints the nodes of a given level.
+        
+        Args:
+            root (Optional[Node]): The root of the tree.
+            level (int): The level to print.
+        """
+        # Base Case
+        if root is None:
+            return
+        # If the current level is the level to print
+        if level == 1:
+            print(root.value, end=" ")
+        # If the current level is greater than the level to print
+        elif level > 1:
+            # Recur for left and right subtrees
+            self._print_given_level(root.left, level - 1)
+            self._print_given_level(root.right, level - 1)
 
     # Aux function
 
@@ -268,7 +300,7 @@ class BinarySearchTree:
         if v is not None:
             v.parent = u.parent
 
-    @staticmethod # staticmethod() é uma função que não precisa de self
+    @staticmethod  # staticmethod() é uma função que não precisa de self
     def get_leftmost_node(node: Node) -> Node:
         """Gets the leftmost node of a subtree.
 
@@ -281,7 +313,7 @@ class BinarySearchTree:
         while node.left is not None:
             node = node.left
         return node
-    
+
     @staticmethod
     def get_rightmost_node(node: Node) -> Node:
         """Gets the rightmost node of a subtree.
@@ -449,3 +481,29 @@ tree2.delete(11)
 
 tree2.print_tree()
 print(f"Height of the tree: {tree2.height()}") """
+
+""" tree3 = BinarySearchTree()
+
+# tree3 = BinarySearchTree.fill_tree_random(tree, 20, 100)
+tree3.insert(23)
+tree3.insert(45)
+tree3.insert(65)
+tree3.insert(28)
+tree3.insert(33)
+tree3.insert(64)
+tree3.insert(7)
+tree3.insert(34)
+tree3.insert(9)
+tree3.insert(87)
+tree3.insert(90)
+tree3.insert(14)
+tree3.insert(54)
+tree3.insert(38)
+tree3.insert(10)
+tree3.insert(3)
+tree3.insert(25)
+
+print(f"Height of the tree: {tree3.height()}")
+
+# print by level
+tree3.print_level_order() """
