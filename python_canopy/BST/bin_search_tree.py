@@ -427,6 +427,40 @@ class BinarySearchTree:
         else:
             return current
 
+    def walk(self) -> None:
+        """Walks through the tree in order.
+        """
+        # if the tree is empty, return None
+        if self.root is None:
+            return None
+
+        # otherwise, call the private method
+        else:
+            return self._walk(self.root)
+    
+    def _walk(self, current: Optional[Node]) -> None:
+        """Private method to walk through the tree in order.
+
+        Args:
+            current (Optional[Node]): The current node to walk through.
+        """
+        # if the current node is None, return None
+        if current is None:
+            return None
+
+        # otherwise, walk through the left subtree
+        self._walk(current.left)
+
+        # print the current node's value
+        print(current.value)
+
+        # walk through the right subtree
+        self._walk(current.right)
+
+    def clear(self) -> None:
+        """Clears the tree.
+        """
+        self.root = None
 
 """ # testing the code
 tree = BinarySearchTree()
