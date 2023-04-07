@@ -437,7 +437,7 @@ class BinarySearchTree:
         # otherwise, call the private method
         else:
             return self._walk(self.root)
-    
+
     def _walk(self, current: Optional[Node]) -> None:
         """Private method to walk through the tree in order.
 
@@ -461,6 +461,7 @@ class BinarySearchTree:
         """Clears the tree.
         """
         self.root = None
+
 
 """ # testing the code
 tree = BinarySearchTree()
@@ -515,7 +516,6 @@ tree2.delete(11)
 
 tree2.print_tree()
 print(f"Height of the tree: {tree2.height()}") """
-
 """ tree3 = BinarySearchTree()
 
 # tree3 = BinarySearchTree.fill_tree_random(tree, 20, 100)
