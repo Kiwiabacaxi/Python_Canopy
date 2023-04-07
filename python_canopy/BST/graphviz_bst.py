@@ -1,36 +1,27 @@
-# importing graphviz
 import graphviz
+from bin_search_tree import Node, BinarySearchTree
+from typing import Optional
 
-# importing BST
-from bin_search_tree import BinarySearchTree
 
-# using graphviz to visualize BST
+def visualize_bst(tree: Optional[Node], graph: graphviz.Digraph):
+    """Visualize a binary search tree using graphviz.
 
-# creating a BST
-tree = BinarySearchTree()
+    Args:
+        tree (BinarySearchTree): The binary search tree to visualize.
+        graph (Digraph): The graphviz graph to add the tree to.
+    """
 
-# tree.fill_tree_ordered(num_elements=20)
-tree.fill_tree_random(num_elements=20, max_int=100)
+    # customize the graph
+    graph.engine = "dot"
 
-# inserting values into BST
-# while value is not equal to -1
-""" while True:
+    graph.attr("node",
+               shape="circle",
+               fontcolor="black",
+               fontname="Arial",
+               fontsize="12",
+               width="0.5",
+               height="0.5")
 
-    # getting value from user
-    value = int(input("Enter value to insert into BST: "))
-    # if value is equal to -1
-    
-    if value == -1:
-        break
-    # insert value into BST
-    else:
-        tree.insert(value) """
-        
-# creating a graph
-graph = graphviz.Digraph()
-
-# creating a function to visualize BST
-def visualize_bst(tree, graph):
     # if tree is not empty
     if tree is not None:
         # if left child is not empty
@@ -46,21 +37,35 @@ def visualize_bst(tree, graph):
         # recursively call visualize_bst on right child
         visualize_bst(tree.right, graph)
 
-# unflattening the graph
-# graph.graph_attr['rankdir'] = 'BT' # BT = bottom to top
-# graph.graph_attr['rankdir'] = 'LR' # LR = left to right
-# graph.graph_attr['rankdir'] = 'RL' # RL = right to left
-# graph.graph_attr['rankdir'] = 'TB' # TB = top to bottom
-# graph.graph_attr['rankdir'] = 'TD' # TD = top down
-# graph.graph_attr['rankdir'] = 'DU' # DU = down up
-# graph.graph_attr['rankdir'] = 'UD' # UD = up down
-graph.unflatten(stagger=50)
 
-# calling visualize_bst
-visualize_bst(tree.root, graph)
+# find the given value and change its color to green
+def find_node(tree: Optional[Node], graph: graphviz.Digraph, value: int):
+    """Find a node in a binary search tree and change its color to green.
 
-tree.print_level_order()
+    Args:
+        tree (BinarySearchTree): The binary search tree to find the node in.
+        graph (Digraph): The graphviz graph to add the tree to.
+        value (int): The value of the node to find.
+    """
 
-# saving graph to file, rendering it as a png and saving it as bst_graph on the same folder
-graph.render(engine='dot', format='png', filename='bst_graph',directory="python_canopy\BST\\bst_graph")
+    # customize the graph
+    graph.engine = "dot"
 
+    graph.attr("node",
+               shape="circle",
+               fontcolor="black",
+               fontname="Arial",
+               fontsize="12",
+               width="0.5",
+               height="0.5")
+
+    # if tree is not empty
+    if tree is not None:
+        # if the value is found
+        if tree.value == value:
+            # change the color of the node to green
+            graph.node(str(tree.value), color="green", style="filled")
+        # recursively call find_node on left child
+        find_node(tree.left, graph, value)
+        # recursively call find_node on right child
+        find_node(tree.right, graph, value)
