@@ -1,4 +1,6 @@
 python_canopy/BST/bst_graph/
 python_canopy/BST/__pycache__/
+
 python_canopy/AVL/__pycache__/
 python_canopy/AVL/avl_graph/
+python_canopy/AVL/img/
