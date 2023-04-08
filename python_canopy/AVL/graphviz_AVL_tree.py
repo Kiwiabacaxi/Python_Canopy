@@ -75,32 +75,3 @@ class AVLTreeGraph(AVLTree):  #
             self.find_node(tree.left, graph, value)
             # recursively call find_node on right child
             self.find_node(tree.right, graph, value)
-
-
-# create a tree
-avl = AVLTreeGraph()
-
-# list
-lst = [
-    59, 16, 9, 8, 0, 6, 15, 41, 27, 23, 19, 17, 21, 40, 39, 32, 38, 53, 49, 47,
-    46, 43, 48, 50, 55, 95, 72, 69, 64, 61, 65, 71, 89, 76, 73, 74, 85, 93, 96,
-    100
-]
-
-# insert nodes
-for i in lst:
-    avl.insert(i)
-
-# create a graph
-graph = graphviz.Digraph()
-
-# visualize the tree
-avl.visualize_avl(avl.root, graph)
-
-# find a node
-avl.find_node(avl.root, graph, 59)
-
-# save the graph
-graph.render(directory='python_canopy/AVL/avl_graph',
-             filename='avl_tree_graph',
-             format='png')
