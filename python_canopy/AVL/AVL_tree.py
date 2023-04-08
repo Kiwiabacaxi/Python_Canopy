@@ -45,7 +45,8 @@ class AVLTree:
                 current = current.right
             # if the value is equal to the current node's value, return None
             else:
-                print("The value already exists in the tree.")
+                #print("Duplicate value")
+                return None
 
         new_node.parent = parent
         # if the tree is empty, set the new node as the root
@@ -405,6 +406,31 @@ class AVLTree:
 
             fixing_node = fixing_node.parent  # type: ignore
 
+    def fill_tree_random(self, size: int, max_value: int) -> None:
+        """ Fill the tree with random values
+        
+        Args:
+            size: the number of values to add to the tree
+            max_value: the maximum value to add to the tree
+        """
+        # add random values to the tree
+        for _ in range(size):
+            self.insert(random.randint(0, max_value))
+
+    def fill_tree_ordered(self, size: int) -> None:
+        """ Fill the tree with ordered values
+        
+        Args:
+            size: the number of values to add to the tree
+        """
+        # add ordered values to the tree
+        for i in range(size):
+            self.insert(i)
+
+    def clear(self) -> None:
+        """ Clear the tree """
+        self.root = None
+
     # -----------------------------------// Print functions //-----------------------------------#
     ## Function to print level order traversal of tree
     def print_level_order(self) -> None:
@@ -426,27 +452,6 @@ class AVLTree:
         elif level >= 1:
             self._print_given_level(root.left, level - 1)
             self._print_given_level(root.right, level - 1)
-
-    def fill_tree_random(self, size: int, max_value: int) -> None:
-        """ Fill the tree with random values
-        
-        Args:
-            size: the number of values to add to the tree
-            max_value: the maximum value to add to the tree
-        """
-        # add random values to the tree
-        for _ in range(size):
-            self.insert(random.randint(0, max_value))
-
-    def fill_tree_ordered(self, size: int) -> None:
-        """ Fill the tree with ordered values
-        
-        Args:
-            size: the number of values to add to the tree
-        """
-        # add ordered values to the tree
-        for i in range(size):
-            self.insert(i)
 
     def print_tree_inorder(self) -> None:
         """ Print the tree in order """
