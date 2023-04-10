@@ -62,3 +62,58 @@ class RBTreeGraphviz(RBTree):
                 dot.edge(str(node.value), str(node.right.value), color="black")
             self._add_edges(node.left, dot)
             self._add_edges(node.right, dot)
+
+    def get_graph(self) -> graphviz.Digraph:
+        """Get the graphviz graph."""
+        dot = graphviz.Digraph()
+
+        # customize the graph
+        dot.engine = "dot"
+        dot.attr("node",
+                 shape="circle",
+                 fontcolor="white",
+                 fontname="Arial",
+                 fontsize="12",
+                 width="0.5",
+                 height="0.5")
+
+        # add nodes to the graph
+        self._add_nodes(self.root, dot)
+
+        # add edges to the graph
+        self._add_edges(self.root, dot)
+
+        return dot
+
+    # get the search node and change its color to blue
+    def get_search_node(self, value: Any) -> graphviz.Digraph:
+        """Get the search node and change its color to blue."""
+        dot = graphviz.Digraph()
+
+        # customize the graph
+        dot.engine = "dot"
+        dot.attr("node",
+                 shape="circle",
+                 fontcolor="white",
+                 fontname="Arial",
+                 fontsize="12",
+                 width="0.5",
+                 height="0.5")
+
+        # add nodes to the graph
+        self._add_nodes(self.root, dot)
+
+        # add edges to the graph
+        self._add_edges(self.root, dot)
+
+        # change the color of the search node to blue
+        dot.node(str(value), str(value), fillcolor="blue", style="filled")
+
+        return dot
+
+""" # test
+tree = RBTreeGraphviz()
+
+tree.fill_tree_random(size=10, max_value=100)
+
+tree.visualize() """
