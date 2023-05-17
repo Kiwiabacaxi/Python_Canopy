@@ -7,3 +7,9 @@ python_canopy(trees)/AVL/img/
 
 python_canopy(trees)/R&B Tree/__pycache__
 python_canopy(trees)/R&B Tree/img
+
+python_maze(graphs)/BFS/__pycache__/
+python_maze(graphs)/BFS/img/
+
+python_maze(graphs)/Matrix graph/__pycache__/
+python_maze(graphs)/Matrix graph/img/
