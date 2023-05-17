@@ -1,8 +1,9 @@
-python_canopy/BST/bst_graph/
-python_canopy/BST/__pycache__/
+python_canopy(trees)/BST/bst_graph/
+python_canopy(trees)/BST/__pycache__/
 
-python_canopy/AVL/__pycache__/
-python_canopy/AVL/avl_graph/
-python_canopy/AVL/img/
+python_canopy(trees)/AVL/__pycache__/
+python_canopy(trees)/AVL/avl_graph/
+python_canopy(trees)/AVL/img/
 
-python_canopy/R&B Tree/__pycache__
+python_canopy(trees)/R&B Tree/__pycache__
+python_canopy(trees)/R&B Tree/img
