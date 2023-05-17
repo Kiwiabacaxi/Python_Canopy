@@ -5,6 +5,9 @@
 This repository contains implementations of Binary Trees, along with visualizations of the algorithms used for searching and sorting with these structures.
 
 ## Binary Search Tree
+<a target="_blank" href="https://colab.research.google.com/github/Kiwiabacaxi/Python_Canopy/blob/main/python_canopy/BST/BSTree.ipynb">
+  <img src="https://colab.research.google.com/assets/colab-badge.svg" alt="Open In Colab"/>
+</a>
 
 Binary Search Tree (BST) is a binary tree data structure where each node has at most two children, and the left subtree of a node contains only values less than the node's value, while the right subtree contains only values greater than the node's value.
 
