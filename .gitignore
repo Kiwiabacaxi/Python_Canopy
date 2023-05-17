@@ -1,15 +1,15 @@
-python_canopy(trees)/BST/bst_graph/
-python_canopy(trees)/BST/__pycache__/
+python_canopy/BST/bst_graph/
+python_canopy/BST/__pycache__/
 
-python_canopy(trees)/AVL/__pycache__/
-python_canopy(trees)/AVL/avl_graph/
+python_canopy/AVL/__pycache__/
+python_canopy/AVL/avl_graph/
 # python_canopy(trees)/AVL/img/
 
-python_canopy(trees)/R&B Tree/__pycache__
-python_canopy(trees)/R&B Tree/img
+python_canopy/R&B Tree/__pycache__
+python_canopy/R&B Tree/img
 
-python_maze(graphs)/BFS/__pycache__/
-python_maze(graphs)/BFS/img/
+python_maze/BFS/__pycache__/
+python_maze/BFS/img/
 
-python_maze(graphs)/Matrix graph/__pycache__/
-python_maze(graphs)/Matrix graph/img/
+python_maze/Matrix graph/__pycache__/
+python_maze/Matrix graph/img/
