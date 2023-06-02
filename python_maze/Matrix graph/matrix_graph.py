@@ -6,7 +6,7 @@ from dataclasses import dataclass
 
 
 @dataclass
-class Graph:
+class GraphStatic:
     """ base class for an undirected graph
     """
     # type hinting
@@ -40,7 +40,7 @@ class Graph:
         
 # Test
 # create the graph
-graph = Graph(4)
+graph = GraphStatic(4)
 graph.add_edge(0, 1)
 graph.add_edge(0, 2)
 graph.add_edge(1, 2)
